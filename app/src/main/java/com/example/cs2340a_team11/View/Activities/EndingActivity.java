@@ -12,7 +12,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.cs2340a_team11.R;
 import com.example.cs2340a_team11.ViewModel.EndScreenViewModel;
 
+
 public class EndingActivity extends AppCompatActivity {
+
     private EndScreenViewModel endScreenViewModel;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +25,8 @@ public class EndingActivity extends AppCompatActivity {
         TextView currentScore = findViewById(R.id.curr_score);
         currentScore.setText("Last attempted score: "
                 + Integer.toString(endScreenViewModel.calcTotalScore()));
+
+        // add score to database
 
         TextView scoreList = findViewById(R.id.scoreList);
         scoreList.setText(endScreenViewModel.getScores());
