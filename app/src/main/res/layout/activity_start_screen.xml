@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -9,18 +10,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/welcome"
-        android:textSize="24sp"
+        android:textSize="48sp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/emailField"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="@string/start_game" />
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/passwordField"
+        android:layout_width="297dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/signInButton"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:text="Sign In" />
+
+    <Button
+        android:id="@+id/createAccount"
+        android:layout_width="193dp"
+        android:layout_height="wrap_content"
+        android:text="Create Account" />
 
     <Button
         android:id="@+id/quitButton"
-        android:layout_width="wrap_content"
+        android:layout_width="107dp"
         android:layout_height="wrap_content"
         android:text="@string/quit" />
 
