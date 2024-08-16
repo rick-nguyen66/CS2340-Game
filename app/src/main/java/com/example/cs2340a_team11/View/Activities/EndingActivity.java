@@ -43,7 +43,7 @@ public class EndingActivity extends AppCompatActivity {
         user.put("player", player.getName());
         user.put("score", player.getScore());
 
-        // add score to database (generally use a hashmap for multiple data
+        // add score to database (generally use a hashmap for multiple data)
         db.collection("scores")
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -70,6 +70,7 @@ public class EndingActivity extends AppCompatActivity {
             }
         });
     }
+
     public void restartGame() {
         endScreenViewModel.resetScore();
         Intent restart = new Intent(this, InitialConfigScreen.class);

@@ -5,6 +5,7 @@ import static androidx.constraintlayout.widget.StateSet.TAG;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,16 +13,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cs2340a_team11.R;
+import com.example.cs2340a_team11.ViewModel.StartScreenViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class StartScreen extends Activity {
-    private FirebaseAuth mAuth;
+public class StartScreen extends AppCompatActivity {
+    private StartScreenViewModel startScreenViewModel;
+    private static final String TAG = "StartScreen";
+    /*
+        For testing:
+        user: re@gmail.com
+        pass: abc123
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,51 +51,46 @@ public class StartScreen extends Activity {
         // Set text to something better if wanted
         welcomeText.setText("Welcome!");
 
-        mAuth = FirebaseAuth.getInstance();
+        // mAuth = FirebaseAuth.getInstance();
+        startScreenViewModel = new ViewModelProvider(this).get(StartScreenViewModel.class);
+
+        startScreenViewModel.getUserLiveData().observe(this, new Observer<FirebaseUser>() {
+            @Override
+            public void onChanged(FirebaseUser user) {
+                Log.d(TAG, "getUser onChanged called");
+                if (user != null) {
+                    startGame(); // Proceed to the next activity
+                } else {
+                    Log.d(TAG, "LOL");
+                }
+            }
+        });
+
+        startScreenViewModel.getAuthErrorMessage().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String message) {
+                Log.d(TAG, "getAuth onChanged called");
+                if (message != null) {
+                    Log.d(TAG, "getAuth onChanged message not null: " + message);
+                    Toast.makeText(StartScreen.this, message, Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d(TAG, "LOL");
+                }
+            }
+        });
 
         createAcc.setOnClickListener(view -> {
-            mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // if signin successful, update UI with user info
-                                Log.d(TAG, "createUserWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                // updateUI(user);
-                                startGame();
-                            } else {
-                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(StartScreen.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                                // updateUI(null);
-                            }
-                        }
-                    });
+            String emailText = email.getText().toString().trim();
+            String passwordText = password.getText().toString().trim();
+            startScreenViewModel.createAccount(emailText, passwordText);
         });
 
         signInButton.setOnClickListener(view -> {
-            mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                // updateUI(user);
-
-                                startGame();
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(StartScreen.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                                // updateUI(null);
-                            }
-                        }
-                    });
+            String emailText = email.getText().toString().trim();
+            String passwordText = password.getText().toString().trim();
+            startScreenViewModel.signIn(emailText, passwordText);
         });
+
         /*
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cs2340a_team11.Model.Player;
 import com.example.cs2340a_team11.R;
@@ -51,6 +52,7 @@ public class InitialConfigScreen extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
+        Toast.makeText(this, "Hi", Toast.LENGTH_SHORT).show();
         initialConfigViewModel.gameSetDifficulty(v.getId());
 
     }

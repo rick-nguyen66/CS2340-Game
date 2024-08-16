@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 import com.example.cs2340a_team11.Model.Leaderboard;
 import com.example.cs2340a_team11.Model.Player;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class EndScreenViewModel extends ViewModel {
     private Player player = Player.getPlayer();
     private Leaderboard leaderboard = Leaderboard.getInstance();
+
     public EndScreenViewModel() {
         /*
         leaderboard.addScore(player.getName(), calcTotalScore());
