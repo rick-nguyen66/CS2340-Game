@@ -30,7 +30,7 @@ public class StartScreen extends AppCompatActivity {
     private static final String TAG = "StartScreen";
     /*
         For testing:
-        user: re@gmail.com
+        user: rexy@gmail.com
         pass: abc123
      */
     @Override

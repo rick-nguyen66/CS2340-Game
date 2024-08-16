@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cs2340a_team11.Model.Player;
@@ -26,19 +27,20 @@ import java.util.Map;
 
 public class EndingActivity extends AppCompatActivity {
     private EndScreenViewModel endScreenViewModel;
+    /*
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Player player = Player.getPlayer();
-
+    */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ending_screen);
         endScreenViewModel = new ViewModelProvider(this).get(EndScreenViewModel.class);
 
-        // DO PLEASE: display end results by fetching info from view-model
+        // Display end results by fetching from viewmodel
         TextView currentScore = findViewById(R.id.curr_score);
         currentScore.setText("Last attempted score: "
                 + Integer.toString(endScreenViewModel.calcTotalScore()));
-
+        /*
         Map<String, Object> user = new HashMap<>();
         user.put("player", player.getName());
         user.put("score", player.getScore());
@@ -61,7 +63,19 @@ public class EndingActivity extends AppCompatActivity {
 
         TextView scoreList = findViewById(R.id.scoreList);
         scoreList.setText(endScreenViewModel.getScores());
+        */
 
+        // Add score to database
+        endScreenViewModel.addScoreToDatabase();
+
+        // Observe scores from ViewModel
+        TextView scoreList = findViewById(R.id.scoreList);
+        endScreenViewModel.getScoresLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String scores) {
+                scoreList.setText(scores);
+            }
+        });
         Button restart = (Button) findViewById(R.id.restart);
         restart.setOnClickListener(new View.OnClickListener() {
             @Override
